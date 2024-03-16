@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RepositoryLayer.Context;
+using ServiceLayer.Constants;
 using ServiceLayer.Customizations;
 using ServiceLayer.Helpers.EmailSender;
 using ServiceLayer.Services.AdminService;
@@ -102,7 +103,7 @@ namespace ServiceLayer.Extensions
                 opt.TokenLifespan = TimeSpan.FromMinutes(10);
             });
 
-            services.Configure<EmailServiceInfoDto>(config.GetSection("EmailSettings"));
+            services.Configure<EmailServiceInfoDto>(config.GetSection(CustomEmailConstants.EmailSettings));
 
             
 

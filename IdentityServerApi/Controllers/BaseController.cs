@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityServerApi.Controllers
 {
-    //[Route("api/[controller]")]
     [ApiController]
     public class BaseController : ControllerBase
     {

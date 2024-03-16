@@ -5,6 +5,8 @@ using EntityLayer.Models.ResponseModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ServiceLayer.Constants;
+using ServiceLayer.Messages;
 
 namespace ServiceLayer.Services.AdminService
 {
@@ -21,7 +23,7 @@ namespace ServiceLayer.Services.AdminService
 
         public async Task<CustomResponseDto<List<UserDtoForAdmin>>> GetUsersWithClientIdAsync(HttpContext httpContext)
         {
-            var clientId = httpContext.User.Claims.First(x => x.Type == "client_id").Value;
+            var clientId = httpContext.User.Claims.First(x => x.Type == CustomIdentityConstants.ClientId).Value;
             var userList = await _userManager.Users.Where(x => x.ClientId == clientId).ToListAsync();
             var mappedUserList = _mapper.Map<List<UserDtoForAdmin>>(userList);
 
@@ -39,7 +41,7 @@ namespace ServiceLayer.Services.AdminService
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return CustomResponseDto<UserDtoForAdmin>.Fail(404, "User does not exist");
+                return CustomResponseDto<UserDtoForAdmin>.Fail(404, CustomErrorMessages.UserNotExist);
             }
 
             var mappedUser = _mapper.Map<UserDtoForAdmin>(user);
@@ -53,7 +55,7 @@ namespace ServiceLayer.Services.AdminService
             var user = await _userManager.FindByIdAsync(request.Id);
             if (user == null)
             {
-                return CustomResponseDto<NoContentDto>.Fail(404, "User does not exist");
+                return CustomResponseDto<NoContentDto>.Fail(404, CustomErrorMessages.UserNotExist);
             }
 
             var mappeduser = _mapper.Map(request, user);  

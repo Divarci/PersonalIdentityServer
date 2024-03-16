@@ -4,6 +4,7 @@ using EntityLayer.Models.DTOs;
 using EntityLayer.Models.Entities;
 using EntityLayer.Models.ResponseModels;
 using Microsoft.AspNetCore.Identity;
+using ServiceLayer.Messages;
 using System.Security.Claims;
 
 namespace ServiceLayer.Services.MemberService
@@ -24,7 +25,7 @@ namespace ServiceLayer.Services.MemberService
             var user = await _userManager.FindByIdAsync(contextUser.Identity.GetSubjectId());
             if (user == null)
             {
-                return CustomResponseDto<UserDtoForMember>.Fail(404, new ErrorDto("User does not exist!"));
+                return CustomResponseDto<UserDtoForMember>.Fail(404, new ErrorDto(CustomErrorMessages.PasswordNotMatch));
             }
             var mappedUser = _mapper.Map<UserDtoForMember>(user);
             return CustomResponseDto<UserDtoForMember>.Success(mappedUser, 200);
@@ -36,31 +37,25 @@ namespace ServiceLayer.Services.MemberService
 
             if (user == null)
             {
-                return CustomResponseDto<NoContentDto>.Fail(404, new ErrorDto("User does not exist!"));
+                return CustomResponseDto<NoContentDto>.Fail(404, new ErrorDto(CustomErrorMessages.PasswordNotMatch));
             }
 
             var resultPasswordMatch = request.Password == request.PasswordConfirm ? true : false;
             if (!resultPasswordMatch)
             {
-                return CustomResponseDto<NoContentDto>.Fail(404, new ErrorDto("Your password must be matched with confirm password!"));
+                return CustomResponseDto<NoContentDto>.Fail(404, new ErrorDto(CustomErrorMessages.PasswordNotMatch));
             }
 
             var resultPasswordChange = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.Password);
             if (!resultPasswordChange.Succeeded)
             {
-                if (!resultPasswordChange.Succeeded)
+                var errorDto = new ErrorDto(new List<string>());
+                foreach (var error in resultPasswordChange.Errors)
                 {
-                    if (!resultPasswordChange.Errors.Any())
-                    {
-                        return CustomResponseDto<NoContentDto>.Fail(404, "Unknown error while updating!");
-                    }
-                    var errorDto = new ErrorDto(new List<string>());
-                    foreach (var error in resultPasswordChange.Errors)
-                    {
-                        errorDto.Errors!.Add(error.Description);
-                    }
-                    return CustomResponseDto<NoContentDto>.Fail(404, errorDto);
+                    errorDto.Errors!.Add(error.Description);
                 }
+                return CustomResponseDto<NoContentDto>.Fail(404, errorDto);
+
             }
 
             return CustomResponseDto<NoContentDto>.Success(201);
@@ -72,17 +67,13 @@ namespace ServiceLayer.Services.MemberService
             var user = await _userManager.FindByIdAsync(contextUser.Identity.GetSubjectId());
             if (user == null)
             {
-                return CustomResponseDto<NoContentDto>.Fail(404, new ErrorDto("User does not exist!"));
+                return CustomResponseDto<NoContentDto>.Fail(404, new ErrorDto(CustomErrorMessages.UserNotExist));
             }
 
-            var mappedUser = _mapper.Map(request,user);
+            var mappedUser = _mapper.Map(request, user);
             var result = await _userManager.UpdateAsync(mappedUser);
             if (!result.Succeeded)
             {
-                if (!result.Errors.Any())
-                {
-                    return CustomResponseDto<NoContentDto>.Fail(404, "Unknown error while updating!");
-                }
                 var errorDto = new ErrorDto(new List<string>());
                 foreach (var error in result.Errors)
                 {

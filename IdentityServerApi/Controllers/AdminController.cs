@@ -1,12 +1,12 @@
 ﻿using EntityLayer.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.Constants;
 using ServiceLayer.Services.AdminService;
-using static Duende.IdentityServer.IdentityServerConstants;
 
 namespace IdentityServerApi.Controllers
 {
-    [Authorize("Admin")]
+    [Authorize(CustomIdentityConstants.AdminRole)]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class AdminController : BaseController

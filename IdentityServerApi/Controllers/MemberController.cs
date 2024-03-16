@@ -1,12 +1,13 @@
 ﻿using EntityLayer.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.Constants;
 using ServiceLayer.Services.MemberService;
 
 namespace IdentityServerApi.Controllers
 {
     [Route("api/[controller]/[action]")]
-    [Authorize("Member")]
+    [Authorize(CustomIdentityConstants.MemberRole)]
     [ApiController]
     public class MemberController : BaseController
     {

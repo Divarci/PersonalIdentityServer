@@ -4,7 +4,9 @@ using EntityLayer.Models.Entities;
 using EntityLayer.Models.ResponseModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using ServiceLayer.Constants;
 using ServiceLayer.Helpers.EmailSender;
+using ServiceLayer.Messages;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ServiceLayer.Services.AuthService
@@ -24,7 +26,7 @@ namespace ServiceLayer.Services.AuthService
 
         public async Task<CustomResponseDto<RegisterDto>> RegisterAsync(RegisterDto request, HttpContext httpContext)
         {
-            var clientId = httpContext.User.Claims.First(x => x.Type == "client_id").Value;
+            var clientId = httpContext.User.Claims.First(x => x.Type == CustomIdentityConstants.ClientId).Value;
 
             var user = _mapper.Map<AppUser>(request);
             user.ClientId = clientId;
@@ -63,12 +65,12 @@ namespace ServiceLayer.Services.AuthService
             var user = await _userManager.FindByIdAsync(request.UserId);
             if (user == null)
             {
-                return CustomResponseDto<NoContentDto>.Fail(404, "User is not exist");
+                return CustomResponseDto<NoContentDto>.Fail(404, CustomErrorMessages.UserNotExist);
             }
 
             if (request.Password != request.PasswordConfirm)
             {
-                return CustomResponseDto<NoContentDto>.Fail(404, "Passwaor and Password Confirm must be matched");
+                return CustomResponseDto<NoContentDto>.Fail(404, CustomErrorMessages.PasswordNotMatch);
 
             }
             var result = await _userManager.ResetPasswordAsync(user, request.Token, request.Password);

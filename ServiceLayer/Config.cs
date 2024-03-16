@@ -5,6 +5,7 @@ namespace IdentityServer.ServiceLayer;
 
 public static class Config
 {
+    //korunacak apiler burada belirlenir. scopelarida burada belirlenir
     public static IEnumerable<ApiResource> ApiResources()
     {
         return new List<ApiResource>()
@@ -13,6 +14,19 @@ public static class Config
                 new ("IdentityApi"){Scopes={ "IdentityApi.Admin", "IdentityApi.Member"}}
             };
     }
+
+    //korunan apilerin belirlenen scopelarin detaylari burada belirlenir
+    public static IEnumerable<ApiScope> ApiScopes()
+    {
+        return new List<ApiScope>()
+        {
+            new (IdentityServerConstants.LocalApi.ScopeName),
+            new("IdentityApi.Admin","Access for admin area"),
+            new("IdentityApi.Member","Access for member area"),
+        };
+    }
+
+    //token icinde olmasi gereken bilgiler
     public static IEnumerable<IdentityResource> IdentityResources()
     {
         return new List<IdentityResource>
@@ -23,15 +37,8 @@ public static class Config
 
             };
     }
-    public static IEnumerable<ApiScope> ApiScopes()
-    {
-        return new List<ApiScope>()
-        {
-            new (IdentityServerConstants.LocalApi.ScopeName),
-            new("IdentityApi.Admin","Access for admin area"),
-            new("IdentityApi.Member","Access for member area"),
-        };
-    }
+    
+    //client belirlenir
     public static IEnumerable<Client> Clients()
     {
         return new List<Client>()
