@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RepositoryLayer.Context;
@@ -21,7 +22,7 @@ namespace ServiceLayer.Extensions
 {
     public static class ServiceLayerExtensions
     {
-        public static IServiceCollection LoadServiceLayerExtensions(this IServiceCollection services,IConfiguration config)
+        public static IServiceCollection LoadServiceLayerExtensions(this IServiceCollection services, IConfiguration config)
         {
 
             services.AddIdentity<AppUser, AppRole>(opt =>
@@ -37,7 +38,7 @@ namespace ServiceLayer.Extensions
                 .AddRoleManager<RoleManager<AppRole>>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
-                
+
             //.AddErrorDescriber<LocalizationErrorDescriber>()
             //.AddPasswordValidator<CustomPasswordValidator>()
             //.AddUserValidator<CustomUserValidator>();
@@ -56,26 +57,26 @@ namespace ServiceLayer.Extensions
            })
                 .AddAspNetIdentity<AppUser>()
                 .AddDeveloperSigningCredential()
-                .AddInMemoryIdentityResources(Config.IdentityResources())
-                .AddInMemoryApiScopes(Config.ApiScopes())
-                .AddInMemoryApiResources(Config.ApiResources())
-                .AddInMemoryClients(Config.Clients())
-                .AddProfileService<ProfileService>();
-            //.AddConfigurationStore(opt =>
-            // {
-            //     opt.ConfigureDbContext = context => context.UseSqlServer(config.GetConnectionString("SqlConnection"), sqlopt => sqlopt.MigrationsAssembly(assembly));
-            // })
-            //.AddOperationalStore(opt =>
-            //{
-            //    opt.ConfigureDbContext = context => context.UseSqlServer(config.GetConnectionString("SqlConnection"), sqlopt => sqlopt.MigrationsAssembly(assembly));
-            //});
+                //.AddInMemoryIdentityResources(Config.IdentityResources())
+                //.AddInMemoryApiScopes(Config.ApiScopes())
+                //.AddInMemoryApiResources(Config.ApiResources())
+                //.AddInMemoryClients(Config.Clients())
+                .AddProfileService<ProfileService>()
+                .AddConfigurationStore(opt =>
+                {
+                    opt.ConfigureDbContext = context => context.UseSqlServer(config.GetConnectionString("SqlConnection"), sqlopt => sqlopt.MigrationsAssembly(assembly));
+                })
+                .AddOperationalStore(opt =>
+                {
+                    opt.ConfigureDbContext = context => context.UseSqlServer(config.GetConnectionString("SqlConnection"), sqlopt => sqlopt.MigrationsAssembly(assembly));
+                });
 
-           
+
             services.AddLocalApiAuthentication();
 
             services.AddAuthorization(options =>
             {
-                
+
                 options.AddPolicy("Admin", policy =>
                 {
                     policy.AddAuthenticationSchemes(IdentityServerConstants.LocalApi.AuthenticationScheme);
@@ -87,15 +88,15 @@ namespace ServiceLayer.Extensions
                 {
                     policy.AddAuthenticationSchemes(IdentityServerConstants.LocalApi.AuthenticationScheme);
                     policy.RequireAuthenticatedUser();
-                    policy.RequireRole("Member","Admin");
-                });               
+                    policy.RequireRole("Member", "Admin");
+                });
             });
-           
+
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IAdminService,AdminService>();
-            services.AddScoped<IMemberService,MemberService>();
+            services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IMemberService, MemberService>();
             services.AddScoped<IEmailHelper, EmailHelper>();
 
             services.Configure<DataProtectionTokenProviderOptions>(opt =>
@@ -105,7 +106,7 @@ namespace ServiceLayer.Extensions
 
             services.Configure<EmailServiceInfoDto>(config.GetSection(CustomEmailConstants.EmailSettings));
 
-            
+
 
             /*.AddResourceOwnerValidator<IdentityResourceOwnerPasswordValidator>()*/ // username switched to email check
 
