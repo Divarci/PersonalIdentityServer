@@ -3,6 +3,7 @@ using EntityLayer.Models.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace IdentityServerApi.Controllers
 {
@@ -35,6 +36,11 @@ namespace IdentityServerApi.Controllers
         {
             DataSeed.ConfigureDbSeed(_configurationDbContext);
             return Ok();
+        }
+        [HttpGet]
+        public IActionResult error()
+        {
+            throw new DBConcurrencyException();
         }
     }
 }

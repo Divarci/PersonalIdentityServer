@@ -1,4 +1,5 @@
 using RepositoryLayer.Extensions;
+using ServiceLayer.Exceptions;
 using ServiceLayer.Extensions;
 using ServiceLayer.Filters;
 
@@ -39,8 +40,12 @@ var app = builder.Build();
     app.UseSwaggerUI();
 }
 
+app.UseCustomStatusCodePages();
+
 app.UseHttpsRedirection();
 app.UseIdentityServer();
+
+app.UseCustomException();
 
 
 //app.UseAuthentication();
