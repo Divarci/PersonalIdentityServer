@@ -12,6 +12,7 @@ namespace ServiceLayer.Automapper
             CreateMap<AppUser,UserDtoForAdmin>().ReverseMap();
             CreateMap<AppUser,UserDtoForMember>().ReverseMap();
             CreateMap<AppUser,PasswordUpdateDto>().ReverseMap();
+            CreateMap<AppUser,UserUpdateDtoForAdmin>().ReverseMap();
         }
     }
 }

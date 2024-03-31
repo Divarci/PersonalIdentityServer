@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
 namespace ServiceLayer.Exceptions
@@ -17,7 +18,7 @@ namespace ServiceLayer.Exceptions
                     context.Response.ContentType = "application/json";
                     var exceptionFeatures = context.Features.Get<IExceptionHandlerFeature>();
                     var statuscode = exceptionFeatures.Error switch
-                    {
+                    {                       
                         _ => 500
                     };
 

@@ -8,13 +8,24 @@ namespace IdentityServerApi
     {
         public static void ConfigureDbSeed(ConfigurationDbContext context)
         {
-            if (!context.Clients.Any())
+            //if (!context.Clients.Any())
+            //{
+            //    foreach (var client in Config.Clients())
+            //    {
+            //        context.Clients.Add(client.ToEntity());
+            //    }
+            //}
+
+            foreach (var client in Config.Clients())
             {
-                foreach (var client in Config.Clients())
+                var existClient = context.Clients.FirstOrDefault(x=> x.ClientId == client.ClientId);
+                if(existClient == null)
                 {
                     context.Clients.Add(client.ToEntity());
                 }
             }
+
+
             if (!context.ApiResources.Any())
             {
                 foreach (var client in Config.ApiResources())
@@ -23,6 +34,8 @@ namespace IdentityServerApi
 
                 }
             }
+
+
             if (!context.ApiScopes.Any())
             {
                 foreach (var client in Config.ApiScopes())

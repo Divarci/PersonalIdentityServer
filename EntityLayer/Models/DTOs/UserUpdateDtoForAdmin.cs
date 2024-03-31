@@ -1,16 +1,14 @@
 ﻿namespace EntityLayer.Models.DTOs
 {
-    public class UserDtoForAdmin
+    public class UserUpdateDtoForAdmin
     {
-        public  string Id { get; set; }
+        public string Id { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
         public string UserName { get; set; }
-        public  bool EmailConfirmed { get; set; }
+        public bool EmailConfirmed { get; set; }
         public int AccessFailedCount { get; set; }
         public DateTimeOffset LockoutEnd { get; set; }
-        public string Role { get; set; }
-        public string ClientId { get; set; }
         public string? FileName { get; set; }
         public string? FileType { get; set; }
     }

@@ -7,32 +7,26 @@ namespace ServiceLayer.Helpers.EmailSender
 {
     public interface IEmailHelper
     {
-        Task SendEmailWithTokenForResetPasswordAsync(string emailTo,string passwordResetLink);
+        Task SendEmailWithTokenForResetPasswordAsync(string emailTo, string passwordResetLink, EmailServiceInfo emailService);
     }
 
     public class EmailHelper : IEmailHelper
     {
-        private readonly EmailServiceInfoDto _emailInfo;
 
-        public EmailHelper(IOptions<EmailServiceInfoDto> emailInfo)
-        {
-            _emailInfo = emailInfo.Value;
-        }
-
-        public async Task SendEmailWithTokenForResetPasswordAsync(string emailTo, string passwordResetLink)
+        public async Task SendEmailWithTokenForResetPasswordAsync(string emailTo, string passwordResetLink, EmailServiceInfo emailService)
         {
             var smtpClient = new SmtpClient();
 
             smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtpClient.Host = _emailInfo.Host;
-            smtpClient.Port = 587;
+            smtpClient.Host = emailService.Host;
+            smtpClient.Port = emailService.Port;
             smtpClient.UseDefaultCredentials = false;
-            smtpClient.Credentials =new NetworkCredential(_emailInfo.Email,_emailInfo.Password);
+            smtpClient.Credentials = new NetworkCredential(emailService.Email, emailService.Password);
             smtpClient.EnableSsl = true;
 
             var mailMessage = new MailMessage();
 
-            mailMessage.From = new MailAddress(_emailInfo.Email);
+            mailMessage.From = new MailAddress(emailService.Email);
             mailMessage.To.Add(emailTo);
             mailMessage.Subject = "Password Reset Link | Test Purpose";
             mailMessage.Body = $@"<h1>PASSWORD RESET LINK</h1>

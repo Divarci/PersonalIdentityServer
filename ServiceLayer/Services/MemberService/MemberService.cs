@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Duende.IdentityServer.Extensions;
+using EntityLayer.Messages;
 using EntityLayer.Models.DTOs;
 using EntityLayer.Models.Entities;
 using EntityLayer.Models.ResponseModels;
 using Microsoft.AspNetCore.Identity;
-using ServiceLayer.Messages;
 using System.Security.Claims;
 
 namespace ServiceLayer.Services.MemberService
@@ -58,7 +58,7 @@ namespace ServiceLayer.Services.MemberService
 
             }
 
-            return CustomResponseDto<NoContentDto>.Success(201);
+            return CustomResponseDto<NoContentDto>.Success(204);
 
         }
 
@@ -82,7 +82,7 @@ namespace ServiceLayer.Services.MemberService
                 return CustomResponseDto<NoContentDto>.Fail(404, errorDto);
             }
 
-            return CustomResponseDto<NoContentDto>.Success(201);
+            return CustomResponseDto<NoContentDto>.Success(204);
         }
     }
 }

@@ -1,11 +1,13 @@
-﻿namespace EntityLayer.Models.DTOs
+﻿using EntityLayer.Models.Validations;
+using Microsoft.AspNetCore.Mvc;
+
+namespace EntityLayer.Models.DTOs
 {
+    [ModelMetadataType(typeof(ForgotPasswordConnectionMetadata))]
     public class ForgotPasswordConnection
     {
         public string Email { get; set; }
-        public string Host { get; set; }
-        public string Action { get; set; }
-        public string Controller { get; set; }
+        public string Url { get; set; }
 
     }
 }

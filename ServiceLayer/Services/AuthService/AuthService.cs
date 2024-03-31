@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EntityLayer.Messages;
 using EntityLayer.Models.DTOs;
 using EntityLayer.Models.Entities;
 using EntityLayer.Models.ResponseModels;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using ServiceLayer.Constants;
 using ServiceLayer.Helpers.EmailSender;
-using ServiceLayer.Messages;
+using System.Security.Claims;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ServiceLayer.Services.AuthService
@@ -24,7 +25,7 @@ namespace ServiceLayer.Services.AuthService
             _emailSender = emailSender;
         }
 
-        public async Task<CustomResponseDto<RegisterDto>> RegisterAsync(RegisterDto request, HttpContext httpContext)
+        public async Task<CustomResponseDto<NoContentDto>> RegisterAsync(RegisterDto request, HttpContext httpContext)
         {
             var clientId = httpContext.User.Claims.First(x => x.Type == CustomIdentityConstants.ClientId).Value;
 
@@ -35,14 +36,18 @@ namespace ServiceLayer.Services.AuthService
             if (!result.Succeeded)
             {
                 var errors = result.Errors.Select(x => x.Description).ToList();
-                return CustomResponseDto<RegisterDto>.Fail(404, new ErrorDto(errors));
+                return CustomResponseDto<NoContentDto>.Fail(404, new ErrorDto(errors));
             }
-            return CustomResponseDto<RegisterDto>.Success(request, 200);
+
+            await _userManager.AddToRoleAsync(user, request.Role);
+
+
+            return CustomResponseDto<NoContentDto>.Success(201);
         }
 
-        public async Task<CustomResponseDto<NoContentDto>> ForgotPasswordAsync(ForgotPasswordConnection request, HttpContext context)
+        public async Task<CustomResponseDto<NoContentDto>> ForgotPasswordAsync(ForgotPasswordConnection connection,EmailServiceInfo emailService, HttpContext context)
         {
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            var user = await _userManager.FindByEmailAsync(connection.Email);
 
             if (user == null)
             {
@@ -51,9 +56,9 @@ namespace ServiceLayer.Services.AuthService
 
             var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            var passwordResetLink = $"{context.Request.Scheme}://{request.Host}/{request.Controller}/{request.Action}?userId={user.Id}&token={resetToken}";
+            var passwordResetLink = $"{connection.Url}?userId={user.Id}&token={resetToken}";
 
-            await _emailSender.SendEmailWithTokenForResetPasswordAsync(request.Email, passwordResetLink);
+            await _emailSender.SendEmailWithTokenForResetPasswordAsync(connection.Email, passwordResetLink,emailService);
 
             return CustomResponseDto<NoContentDto>.Success(201);
 
@@ -68,11 +73,7 @@ namespace ServiceLayer.Services.AuthService
                 return CustomResponseDto<NoContentDto>.Fail(404, CustomErrorMessages.UserNotExist);
             }
 
-            if (request.Password != request.PasswordConfirm)
-            {
-                return CustomResponseDto<NoContentDto>.Fail(404, CustomErrorMessages.PasswordNotMatch);
-
-            }
+            
             var result = await _userManager.ResetPasswordAsync(user, request.Token, request.Password);
             if (!result.Succeeded)
             {
@@ -80,7 +81,7 @@ namespace ServiceLayer.Services.AuthService
                 return CustomResponseDto<NoContentDto>.Fail(404, new ErrorDto(errors));
             }
 
-            return CustomResponseDto<NoContentDto>.Success(201);
+            return CustomResponseDto<NoContentDto>.Success(204);
 
         }
     }

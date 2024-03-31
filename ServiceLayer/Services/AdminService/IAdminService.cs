@@ -7,7 +7,7 @@ namespace ServiceLayer.Services.AdminService
     public interface IAdminService
     {
         Task <CustomResponseDto<List<UserDtoForAdmin>>> GetUsersWithClientIdAsync(HttpContext httpContext);
-        Task<CustomResponseDto<UserDtoForAdmin>> GetUserWithClientIdAsync(string userId);
-        Task<CustomResponseDto<NoContentDto>> UserUpdateByAdminAsync(UserDtoForAdmin request);
+        Task<CustomResponseDto<UserUpdateDtoForAdmin>> GetUserWithClientIdAsync(string userId,HttpContext httpContext);
+        Task<CustomResponseDto<NoContentDto>> UserUpdateByAdminAsync(UserUpdateDtoForAdmin request);
     }
 }

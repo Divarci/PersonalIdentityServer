@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ServiceLayer.Migrations.PersistedGrantDb
+namespace RepositoryLayer.Migrations.PersistedGrant
 {
     [DbContext(typeof(PersistedGrantDbContext))]
-    [Migration("20240316190336_IddentityPersistes")]
-    partial class IddentityPersistes
+    [Migration("20240331120219_PersistedGrantInitial")]
+    partial class PersistedGrantInitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

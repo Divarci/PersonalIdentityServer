@@ -27,9 +27,9 @@ namespace IdentityServerApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordConnection request)
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordInfo info)
         {
-            var result = await _authService.ForgotPasswordAsync(request,HttpContext);
+            var result = await _authService.ForgotPasswordAsync(info.ForgotPasswordConnection, info.EmailService, HttpContext);
             return CreateAction(result);
         }
 

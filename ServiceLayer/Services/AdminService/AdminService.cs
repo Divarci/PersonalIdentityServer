@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EntityLayer.Messages;
 using EntityLayer.Models.DTOs;
 using EntityLayer.Models.Entities;
 using EntityLayer.Models.ResponseModels;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ServiceLayer.Constants;
-using ServiceLayer.Messages;
+using System.Net.Http;
 
 namespace ServiceLayer.Services.AdminService
 {
@@ -36,21 +37,24 @@ namespace ServiceLayer.Services.AdminService
             return CustomResponseDto<List<UserDtoForAdmin>>.Success(mappedUserList, 200);
         }
 
-        public async Task<CustomResponseDto<UserDtoForAdmin>> GetUserWithClientIdAsync(string userId)
+        public async Task<CustomResponseDto<UserUpdateDtoForAdmin>> GetUserWithClientIdAsync(string userId,HttpContext httpContext)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var clientId = httpContext.User.Claims.First(x => x.Type == CustomIdentityConstants.ClientId).Value;
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(x=>x.Id==userId && x.ClientId==clientId);
+
             if (user == null)
             {
-                return CustomResponseDto<UserDtoForAdmin>.Fail(404, CustomErrorMessages.UserNotExist);
+                return CustomResponseDto<UserUpdateDtoForAdmin>.Fail(404, CustomErrorMessages.UserNotExist);
             }
 
-            var mappedUser = _mapper.Map<UserDtoForAdmin>(user);
+            var mappedUser = _mapper.Map<UserUpdateDtoForAdmin>(user);
 
-            return CustomResponseDto<UserDtoForAdmin>.Success(mappedUser, 200);
+            return CustomResponseDto<UserUpdateDtoForAdmin>.Success(mappedUser, 200);
 
         }
 
-        public async Task<CustomResponseDto<NoContentDto>> UserUpdateByAdminAsync(UserDtoForAdmin request)
+        public async Task<CustomResponseDto<NoContentDto>> UserUpdateByAdminAsync(UserUpdateDtoForAdmin request)
         {
             var user = await _userManager.FindByIdAsync(request.Id);
             if (user == null)
@@ -58,15 +62,15 @@ namespace ServiceLayer.Services.AdminService
                 return CustomResponseDto<NoContentDto>.Fail(404, CustomErrorMessages.UserNotExist);
             }
 
-            var mappeduser = _mapper.Map(request, user);  
-            var result = await _userManager.UpdateAsync(mappeduser);
+            var mappedUser = _mapper.Map(request, user);  
+            var result = await _userManager.UpdateAsync(mappedUser);
             if (!result.Succeeded)
             {
                 var errors = result.Errors.Select(x=>x.Description).ToList();
                 return CustomResponseDto<NoContentDto>.Fail(404, new ErrorDto(errors));
             }
 
-            return CustomResponseDto<NoContentDto>.Success(201);
+            return CustomResponseDto<NoContentDto>.Success(204);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace ServiceLayer.Filters
             {
                 var errors = context.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).ToList();
 
-                context.Result = new ObjectResult(CustomResponseDto<NoContentDto>.Fail(111, new ErrorDto(errors)));
+                context.Result = new ObjectResult(CustomResponseDto<NoContentDto>.Fail(400, new ErrorDto(errors)));
             }
         }
     }

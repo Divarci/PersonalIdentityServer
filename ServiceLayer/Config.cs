@@ -11,7 +11,7 @@ public static class Config
         return new List<ApiResource>()
             {
                 new ApiResource(IdentityServerConstants.LocalApi.ScopeName),
-                new ("IdentityApi"){Scopes={ "IdentityApi.Admin", "IdentityApi.Member"}}
+                //new ("IdentityApi"){Scopes={ "IdentityApi.Admin", "IdentityApi.Member"}}
             };
     }
 
@@ -21,8 +21,8 @@ public static class Config
         return new List<ApiScope>()
         {
             new (IdentityServerConstants.LocalApi.ScopeName),
-            new("IdentityApi.Admin","Access for admin area"),
-            new("IdentityApi.Member","Access for member area"),
+            //new("IdentityApi.Admin","Access for admin area"),
+            //new("IdentityApi.Member","Access for member area"),
         };
     }
 
@@ -51,7 +51,24 @@ public static class Config
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
                     ClientSecrets = { new Secret("kakaLEYTO12*".Sha256()) },
 
-                    AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile,IdentityServerConstants.StandardScopes.OfflineAccess,"Roles","IdentityApi.Admin",IdentityServerConstants.LocalApi.ScopeName },
+                    AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile,IdentityServerConstants.StandardScopes.OfflineAccess,"Roles",IdentityServerConstants.LocalApi.ScopeName },
+
+                    AccessTokenLifetime = (int)(DateTime.Now.AddDays(1)-DateTime.Now).TotalSeconds,
+                    AllowOfflineAccess = true,
+                    RefreshTokenUsage = TokenUsage.OneTimeOnly,
+                    AbsoluteRefreshTokenLifetime =(int)(DateTime.Now.AddDays(30)-DateTime.Now).TotalSeconds,
+                    RefreshTokenExpiration = TokenExpiration.Absolute,
+
+                },
+                new Client
+                {
+                    ClientId = "Test",
+                    ClientName = "TestClient",
+
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
+                    ClientSecrets = { new Secret("kakaLEYTO12*".Sha256()) },
+
+                    AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId,IdentityServerConstants.StandardScopes.Profile,IdentityServerConstants.StandardScopes.OfflineAccess,"Roles",IdentityServerConstants.LocalApi.ScopeName },
 
                     AccessTokenLifetime = (int)(DateTime.Now.AddDays(1)-DateTime.Now).TotalSeconds,
                     AllowOfflineAccess = true,

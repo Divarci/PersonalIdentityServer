@@ -1,5 +1,9 @@
-﻿namespace EntityLayer.Models.DTOs
+﻿using EntityLayer.Models.Validations;
+using Microsoft.AspNetCore.Mvc;
+
+namespace EntityLayer.Models.DTOs
 {
+    [ModelMetadataType(typeof(ResetPasswordMetadata))]
     public class ResetPasswordDto
     {
         public string Password { get; set; }

@@ -15,8 +15,7 @@ namespace RepositoryLayer.Extensions
                 options.UseSqlServer(config.GetConnectionString("SqlConnection"));
             });
 
-
-
+            
             return services;
         }
     }

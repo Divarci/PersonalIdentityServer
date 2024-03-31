@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ServiceLayer.Migrations
+namespace RepositoryLayer.Migrations.Configuration
 {
     /// <inheritdoc />
-    public partial class IddentityConfig : Migration
+    public partial class ConfigurationInitial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

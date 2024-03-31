@@ -28,12 +28,12 @@ namespace IdentityServerApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUser(string userId)
         {
-            var result = await _adminService.GetUserWithClientIdAsync(userId);
+            var result = await _adminService.GetUserWithClientIdAsync(userId,HttpContext);
             return CreateAction(result);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateUserByAdmin(UserDtoForAdmin request)
+        public async Task<IActionResult> UpdateUserByAdmin(UserUpdateDtoForAdmin request)
         {
             var result = await _adminService.UserUpdateByAdminAsync(request);
             return CreateAction(result);

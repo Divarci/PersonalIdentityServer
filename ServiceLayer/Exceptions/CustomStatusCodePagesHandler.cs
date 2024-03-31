@@ -1,7 +1,7 @@
-﻿using EntityLayer.Models.ResponseModels;
+﻿using EntityLayer.Messages;
+using EntityLayer.Models.ResponseModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using ServiceLayer.Messages;
 
 namespace ServiceLayer.Exceptions
 {

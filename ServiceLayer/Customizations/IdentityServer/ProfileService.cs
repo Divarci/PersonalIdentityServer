@@ -6,7 +6,7 @@ using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
-namespace ServiceLayer.Customizations
+namespace ServiceLayer.Customizations.IdentityServer
 {
     public class ProfileService : IProfileService
     {
@@ -24,10 +24,12 @@ namespace ServiceLayer.Customizations
 
             var claims = new List<Claim>
         {
-            new Claim(JwtClaimTypes.Role, roles.FirstOrDefault())
+            new Claim(JwtClaimTypes.Role, roles.FirstOrDefault()!),
+            new Claim(JwtClaimTypes.Name,user.UserName!)
         };
 
             context.IssuedClaims.AddRange(claims);
+
         }
 
         public async Task IsActiveAsync(IsActiveContext context)

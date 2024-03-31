@@ -1,17 +1,13 @@
 ﻿using Duende.IdentityServer;
 using EntityLayer.Models.DTOs;
 using EntityLayer.Models.Entities;
-using IdentityServer.ServiceLayer;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RepositoryLayer.Context;
 using ServiceLayer.Constants;
-using ServiceLayer.Customizations;
+using ServiceLayer.Customizations.IdentityServer;
 using ServiceLayer.Helpers.EmailSender;
 using ServiceLayer.Services.AdminService;
 using ServiceLayer.Services.AuthService;
@@ -34,6 +30,7 @@ namespace ServiceLayer.Extensions
                 opt.Lockout.MaxFailedAccessAttempts = 3;
                 opt.User.RequireUniqueEmail = true;
                 opt.SignIn.RequireConfirmedEmail = false; // true
+                
             })
                 .AddRoleManager<RoleManager<AppRole>>()
                 .AddEntityFrameworkStores<AppDbContext>()
@@ -43,18 +40,21 @@ namespace ServiceLayer.Extensions
             //.AddPasswordValidator<CustomPasswordValidator>()
             //.AddUserValidator<CustomUserValidator>();
 
-            var assembly = Assembly.GetExecutingAssembly().GetName().Name;
+
+
+
+            var assembly = Assembly.GetAssembly(typeof(AppDbContext))!.GetName().Name;
 
             services.AddIdentityServer(options =>
-           {
-               options.Events.RaiseErrorEvents = true;
-               options.Events.RaiseInformationEvents = true;
-               options.Events.RaiseFailureEvents = true;
-               options.Events.RaiseSuccessEvents = true;
+            {
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseSuccessEvents = true;
 
-               // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
-               options.EmitStaticAudienceClaim = true;
-           })
+                // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
+                options.EmitStaticAudienceClaim = true;
+            })
                 .AddAspNetIdentity<AppUser>()
                 .AddDeveloperSigningCredential()
                 //.AddInMemoryIdentityResources(Config.IdentityResources())
@@ -62,6 +62,7 @@ namespace ServiceLayer.Extensions
                 //.AddInMemoryApiResources(Config.ApiResources())
                 //.AddInMemoryClients(Config.Clients())
                 .AddProfileService<ProfileService>()
+                .AddResourceOwnerValidator<IdentityResourceOwnerPasswordValidator>()
                 .AddConfigurationStore(opt =>
                 {
                     opt.ConfigureDbContext = context => context.UseSqlServer(config.GetConnectionString("SqlConnection"), sqlopt => sqlopt.MigrationsAssembly(assembly));
@@ -72,23 +73,26 @@ namespace ServiceLayer.Extensions
                 });
 
 
+
+
+
             services.AddLocalApiAuthentication();
 
             services.AddAuthorization(options =>
             {
 
-                options.AddPolicy("Admin", policy =>
+                options.AddPolicy(CustomIdentityConstants.AdminRole, policy =>
                 {
                     policy.AddAuthenticationSchemes(IdentityServerConstants.LocalApi.AuthenticationScheme);
                     policy.RequireAuthenticatedUser();
-                    policy.RequireRole("Admin");
+                    policy.RequireRole(CustomIdentityConstants.AdminRole);
                 });
 
-                options.AddPolicy("Member", policy =>
+                options.AddPolicy(CustomIdentityConstants.MemberRole, policy =>
                 {
                     policy.AddAuthenticationSchemes(IdentityServerConstants.LocalApi.AuthenticationScheme);
                     policy.RequireAuthenticatedUser();
-                    policy.RequireRole("Member", "Admin");
+                    policy.RequireRole(CustomIdentityConstants.MemberRole, CustomIdentityConstants.AdminRole);
                 });
             });
 
@@ -104,11 +108,7 @@ namespace ServiceLayer.Extensions
                 opt.TokenLifespan = TimeSpan.FromMinutes(10);
             });
 
-            services.Configure<EmailServiceInfoDto>(config.GetSection(CustomEmailConstants.EmailSettings));
 
-
-
-            /*.AddResourceOwnerValidator<IdentityResourceOwnerPasswordValidator>()*/ // username switched to email check
 
             return services;
         }
