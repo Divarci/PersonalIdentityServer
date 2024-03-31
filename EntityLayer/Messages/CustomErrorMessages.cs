@@ -9,5 +9,7 @@
         public const string ForbiddenAccess = "You do not have permission to this page.";
         public const string PageNotFound = "Page does not exist. Please check your input.";
         public const string InternalError = "Please see your admin";
+        public const string MethodNotAllowed = "Method not allowed. Check your HTTP Protocols";
+        public const string UnsupportedEntry = "Unsupported media type. Server is not supporting the data you sent.";
     }
 }

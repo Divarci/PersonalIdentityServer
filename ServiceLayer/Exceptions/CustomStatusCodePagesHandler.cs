@@ -22,6 +22,12 @@ namespace ServiceLayer.Exceptions
                     case 404:
                         await statusCodeContext.HttpContext.Response.WriteAsJsonAsync(CustomResponseDto<NoContentDto>.Fail(404, new ErrorDto(CustomErrorMessages.PageNotFound)));
                         break;
+                    case 405:
+                        await statusCodeContext.HttpContext.Response.WriteAsJsonAsync(CustomResponseDto<NoContentDto>.Fail(404, new ErrorDto(CustomErrorMessages.MethodNotAllowed)));
+                        break;
+                    case 412:
+                        await statusCodeContext.HttpContext.Response.WriteAsJsonAsync(CustomResponseDto<NoContentDto>.Fail(404, new ErrorDto(CustomErrorMessages.UnsupportedEntry)));
+                        break;
                     default:
                         await statusCodeContext.HttpContext.Response.WriteAsJsonAsync(CustomResponseDto<NoContentDto>.Fail(500, new ErrorDto(CustomErrorMessages.InternalError)));
                         break;
