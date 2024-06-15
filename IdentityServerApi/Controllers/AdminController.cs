@@ -1,5 +1,4 @@
 ﻿using EntityLayer.Models.DTOs;
-using EntityLayer.Models.DTOs.ClientDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Constants;
@@ -46,33 +45,6 @@ namespace IdentityServerApi.Controllers
             var result = await _adminService.RemoveUserAsync(userId);
             return CreateAction(result);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> AddClient(ClientCreateDto request)
-        {
-            var result = await _adminService.CreateClientAsync(request);
-            return CreateAction(result);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetClientById(int id)
-        {
-            var result = await _adminService.GetClientByIdAsync(id);
-            return CreateAction(result);
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateClient(ClientUpdateDto request)
-        {
-            var result = await _adminService.UpdateClientAsync(request);
-            return CreateAction(result);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveClient(int id)
-        {
-            var result = await _adminService.RemoveClientAsync(id);
-            return CreateAction(result);
-        }
+       
     }
 }

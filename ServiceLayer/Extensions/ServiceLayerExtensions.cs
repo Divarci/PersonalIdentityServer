@@ -11,8 +11,8 @@ using ServiceLayer.Constants;
 using ServiceLayer.Customizations.IdentityServer;
 using ServiceLayer.Helpers.EmailSender;
 using ServiceLayer.Services.AdminService;
-using ServiceLayer.Services.AdminService.Concrete;
 using ServiceLayer.Services.AuthService;
+using ServiceLayer.Services.IdentityServerService;
 using ServiceLayer.Services.MemberService;
 using System.Reflection;
 
@@ -110,6 +110,7 @@ namespace ServiceLayer.Extensions
             services.AddScoped<IMemberService, MemberService>();
             services.AddScoped<IEmailHelper, EmailHelper>();
             services.AddScoped<IUnitOfWorks, UnitOfWorks>();
+            services.AddScoped<IIdentityServerService, IdentityServerService>();
 
             services.Configure<DataProtectionTokenProviderOptions>(opt =>
             {
