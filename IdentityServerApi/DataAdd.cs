@@ -13,7 +13,6 @@ namespace IdentityServerApi
                 {
                     UserName = "hasan",
                     Email = "hasan@gmail.com",
-                    ClientId = "CW",
                     FullName = "hasan divarci"
                 }, "Password12*"
                 );
@@ -22,7 +21,6 @@ namespace IdentityServerApi
                 {
                     UserName = "veli",
                     Email = "veli@gmail.com",
-                    ClientId = "CW",
                     FullName = "veli donmez"
                 }, "Password12*"
                 );
@@ -32,7 +30,6 @@ namespace IdentityServerApi
                {
                    UserName = "begum",
                    Email = "begum@gmail.com",
-                   ClientId = "Test",
                    FullName = "begum divarci"
                }, "Password12*"
                );
@@ -41,7 +38,6 @@ namespace IdentityServerApi
                {
                    UserName = "ahmet",
                    Email = "ahmet@gmail.com",
-                   ClientId = "Test",
                    FullName = "ahmet yorulmaz"
                }, "Password12*"
                );

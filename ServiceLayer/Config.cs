@@ -64,6 +64,7 @@ public static class Config
                 {
                     ClientId = "Test",
                     ClientName = "TestClient",
+                    
 
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
                     ClientSecrets = { new Secret("kakaLEYTO12*".Sha256()) },

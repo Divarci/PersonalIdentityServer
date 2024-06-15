@@ -10,7 +10,6 @@
         public int AccessFailedCount { get; set; }
         public DateTimeOffset LockoutEnd { get; set; }
         public string Role { get; set; }
-        public string ClientId { get; set; }
         public string? FileName { get; set; }
         public string? FileType { get; set; }
     }

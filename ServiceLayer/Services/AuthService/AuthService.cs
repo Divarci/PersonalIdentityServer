@@ -27,10 +27,7 @@ namespace ServiceLayer.Services.AuthService
 
         public async Task<CustomResponseDto<NoContentDto>> RegisterAsync(RegisterDto request, HttpContext httpContext)
         {
-            var clientId = httpContext.User.Claims.First(x => x.Type == CustomIdentityConstants.ClientId).Value;
-
             var user = _mapper.Map<AppUser>(request);
-            user.ClientId = clientId;
 
             var result = await _userManager.CreateAsync(user, request.Password);
             if (!result.Succeeded)

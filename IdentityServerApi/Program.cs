@@ -3,6 +3,7 @@ using RepositoryLayer.Extensions;
 using ServiceLayer.Exceptions;
 using ServiceLayer.Extensions;
 using ServiceLayer.Filters;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,12 +16,12 @@ builder.Services.LoadServiceLayerExtensions(builder.Configuration);
 builder.Services.AddControllers(opt =>
 {
     opt.Filters.Add(new ValidateFilterAttribute());
+}).AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 });
 
-/*
- 
- 
- */
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

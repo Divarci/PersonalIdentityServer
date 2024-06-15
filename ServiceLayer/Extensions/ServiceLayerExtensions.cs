@@ -1,5 +1,4 @@
 ﻿using Duende.IdentityServer;
-using EntityLayer.Models.DTOs;
 using EntityLayer.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,10 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RepositoryLayer.Context;
+using RepositoryLayer.UnitOFWorks.IdentityServer;
 using ServiceLayer.Constants;
 using ServiceLayer.Customizations.IdentityServer;
 using ServiceLayer.Helpers.EmailSender;
 using ServiceLayer.Services.AdminService;
+using ServiceLayer.Services.AdminService.Concrete;
 using ServiceLayer.Services.AuthService;
 using ServiceLayer.Services.MemberService;
 using System.Reflection;
@@ -108,6 +109,7 @@ namespace ServiceLayer.Extensions
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IMemberService, MemberService>();
             services.AddScoped<IEmailHelper, EmailHelper>();
+            services.AddScoped<IUnitOfWorks, UnitOfWorks>();
 
             services.Configure<DataProtectionTokenProviderOptions>(opt =>
             {

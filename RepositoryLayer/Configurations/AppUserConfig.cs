@@ -8,7 +8,6 @@ namespace RepositoryLayer.Configurations
     {
         public void Configure(EntityTypeBuilder<AppUser> builder)
         {
-            builder.Property(x => x.ClientId).IsRequired();
             builder.Property(x=>x.FullName).IsRequired().HasMaxLength(40);
         }
     }

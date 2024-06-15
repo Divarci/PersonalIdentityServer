@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RepositoryLayer.Context;
+using RepositoryLayer.Repositories.IdentityServer;
 
 namespace RepositoryLayer.Extensions
 {
@@ -15,6 +16,7 @@ namespace RepositoryLayer.Extensions
                 options.UseSqlServer(config.GetConnectionString("SqlConnection"));
             });
 
+            services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepositoy<>));
             
             return services;
         }

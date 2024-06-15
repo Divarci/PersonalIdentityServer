@@ -8,18 +8,9 @@ namespace IdentityServerApi
     {
         public static void ConfigureDbSeed(ConfigurationDbContext context)
         {
-            //if (!context.Clients.Any())
-            //{
-            //    foreach (var client in Config.Clients())
-            //    {
-            //        context.Clients.Add(client.ToEntity());
-            //    }
-            //}
-
-            foreach (var client in Config.Clients())
+            if (!context.Clients.Any())
             {
-                var existClient = context.Clients.FirstOrDefault(x=> x.ClientId == client.ClientId);
-                if(existClient == null)
+                foreach (var client in Config.Clients())
                 {
                     context.Clients.Add(client.ToEntity());
                 }

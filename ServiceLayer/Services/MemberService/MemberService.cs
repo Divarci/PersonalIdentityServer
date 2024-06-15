@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Duende.IdentityServer.Configuration;
 using Duende.IdentityServer.Extensions;
 using EntityLayer.Messages;
 using EntityLayer.Models.DTOs;

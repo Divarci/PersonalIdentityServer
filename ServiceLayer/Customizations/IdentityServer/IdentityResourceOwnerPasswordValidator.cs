@@ -21,12 +21,7 @@ namespace ServiceLayer.Customizations.IdentityServer
             if (user == null)
             {
                 return;
-            }
-            if (context.Request.ClientId != user.ClientId)
-            {
-                return;
-            }
-           
+            }           
             var passwordCheck = await _userManager.CheckPasswordAsync(user, context.Password);
             if (!passwordCheck)
             {
