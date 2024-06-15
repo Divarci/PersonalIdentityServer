@@ -1,4 +1,5 @@
 ﻿using EntityLayer.Models.DTOs.ClientDto;
+using EntityLayer.Models.ResponseModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.Constants;
@@ -7,7 +8,7 @@ using ServiceLayer.Services.IdentityServerService;
 namespace IdentityServerApi.Controllers
 {
     [Authorize(CustomIdentityConstants.AdminRole)]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class IdentityServerController : BaseController
     {
@@ -16,6 +17,15 @@ namespace IdentityServerApi.Controllers
         public IdentityServerController(IIdentityServerService identityServerService)
         {
             _identityServerService = identityServerService;
+        }
+
+        #region CLIENT
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllClients()
+        {
+            var result = await _identityServerService.GetAllClients();
+            return CreateAction(result);
         }
 
         [HttpPost]
@@ -45,5 +55,16 @@ namespace IdentityServerApi.Controllers
             var result = await _identityServerService.RemoveClientAsync(id);
             return CreateAction(result);
         }
+
+        #endregion
+
+        #region SCOPES
+        #endregion
+
+        #region GRANT-TYPES
+        #endregion
+
+        #region SECRETS
+        #endregion
     }
 }

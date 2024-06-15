@@ -14,5 +14,14 @@ namespace ServiceLayer.Services.IdentityServerService
         Task<CustomResponseDto<NoContentDto>> RemoveClientAsync(int id);
 
         #endregion
+
+        #region SCOPES
+        #endregion
+
+        #region GRANT-TYPES
+        #endregion
+
+        #region SECRETS
+        #endregion
     }
 }

@@ -102,5 +102,14 @@ namespace ServiceLayer.Services.IdentityServerService
 
         #endregion
 
+        #region SCOPES
+        #endregion
+
+        #region GRANT-TYPES
+        #endregion
+
+        #region SECRETS
+        #endregion
+
     }
 }
