@@ -1,11 +1,12 @@
-﻿using EntityLayer.Models.DTOs.ClientDto.ClientScopeDto;
-using EntityLayer.Models.DTOs.ClientDto.ClientSecretDto;
-using Microsoft.AspNetCore.Http;
+﻿using EntityLayer.Models.DTOs.ClientDto.ClientSecretDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.Constants;
 using ServiceLayer.Services.IdentityServerService.ClientServices.ClientSecretServices;
 
 namespace IdentityServerApi.Controllers.IdentityServerConfigControllers.ClientControllers
 {
+    [Authorize(CustomIdentityConstants.AdminRole)]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class ClientSecretController : BaseController

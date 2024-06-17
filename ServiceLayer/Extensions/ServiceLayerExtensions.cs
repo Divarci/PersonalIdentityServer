@@ -21,6 +21,8 @@ using ServiceLayer.Services.AuthServices;
 using ServiceLayer.Services.IdentityServerService.ClientServices.ClientGrantTypeServices;
 using ServiceLayer.Services.IdentityServerService.ClientServices.ClientScopeServices;
 using ServiceLayer.Services.IdentityServerService.ClientServices.ClientSecretServices;
+using ServiceLayer.Services.IdentityServerService.IdentityResourceServices;
+using ServiceLayer.Services.IdentityServerService.IdentityResourceServices.IdentityResourceClaimServices;
 
 namespace ServiceLayer.Extensions
 {
@@ -123,6 +125,8 @@ namespace ServiceLayer.Extensions
             services.AddScoped<IClientGrantTypeService, ClientGrantTypeService>();
             services.AddScoped<IClientScopeService, ClientScopeService>();
             services.AddScoped<IClientSecretService, ClientSecretService>();
+            services.AddScoped<IIdentityResourceService, IdentityResourceService>();
+            services.AddScoped<IIdentityResourceClaimService, IdentityResourceClaimService>();
 
             services.Configure<DataProtectionTokenProviderOptions>(opt =>
             {

@@ -1,9 +1,12 @@
 ﻿using EntityLayer.Models.DTOs.ClientDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.Constants;
 using ServiceLayer.Services.IdentityServerService.ClientServices;
 
 namespace IdentityServerApi.Controllers.IdentityServerConfigControllers.ClientControllers
 {
+    [Authorize(CustomIdentityConstants.AdminRole)]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class ClientController : BaseController

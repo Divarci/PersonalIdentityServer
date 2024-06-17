@@ -1,9 +1,12 @@
 ﻿using EntityLayer.Models.DTOs.ApiSideDto.ApiResourceDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.Constants;
 using ServiceLayer.Services.IdentityServerService.ApiSideServices.ApiResourceServices;
 
 namespace IdentityServerApi.Controllers.IdentityServerConfigControllers.ApiSideControllers.ApiResourceControllers
 {
+    [Authorize(CustomIdentityConstants.AdminRole)]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class ApiResourceController : BaseController

@@ -1,9 +1,12 @@
 ﻿using EntityLayer.Models.DTOs.ApiSideDto.ApiScopeDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.Constants;
 using ServiceLayer.Services.IdentityServerService.ApiSideServices.ApiScopeServices;
 
 namespace IdentityServerApi.Controllers.IdentityServerConfigControllers.ApiSideControllers.ApiScopeControllers
 {
+    [Authorize(CustomIdentityConstants.AdminRole)]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class ApiScopeController : BaseController

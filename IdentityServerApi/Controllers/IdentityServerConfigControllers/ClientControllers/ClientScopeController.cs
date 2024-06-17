@@ -1,10 +1,12 @@
-﻿using EntityLayer.Models.DTOs.ClientDto.ClientGrantTypeDto;
-using EntityLayer.Models.DTOs.ClientDto.ClientScopeDto;
+﻿using EntityLayer.Models.DTOs.ClientDto.ClientScopeDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.Constants;
 using ServiceLayer.Services.IdentityServerService.ClientServices.ClientScopeServices;
 
 namespace IdentityServerApi.Controllers.IdentityServerConfigControllers.ClientControllers
 {
+    [Authorize(CustomIdentityConstants.AdminRole)]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class ClientScopeController : BaseController
