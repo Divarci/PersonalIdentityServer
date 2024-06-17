@@ -12,5 +12,6 @@
         public const string MethodNotAllowed = "Method not allowed. Check your HTTP Protocols";
         public const string UnsupportedEntry = "Unsupported media type. Server is not supporting the data you sent.";
         public const string ClientNotExist = "Client not exist. Please try again.";
+        public const string ScopeNotExist = "Scope not exist. Please try again.";
     }
 }

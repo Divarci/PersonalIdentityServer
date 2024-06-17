@@ -1,4 +1,4 @@
-﻿using EntityLayer.Models.DTOs;
+﻿using EntityLayer.Models.DTOs.AuthenticationDto;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;

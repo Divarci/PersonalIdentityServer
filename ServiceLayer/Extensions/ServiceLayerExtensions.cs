@@ -10,11 +10,17 @@ using RepositoryLayer.UnitOFWorks.IdentityServer;
 using ServiceLayer.Constants;
 using ServiceLayer.Customizations.IdentityServer;
 using ServiceLayer.Helpers.EmailSender;
-using ServiceLayer.Services.AdminService;
-using ServiceLayer.Services.AuthService;
-using ServiceLayer.Services.IdentityServerService;
-using ServiceLayer.Services.MemberService;
 using System.Reflection;
+using ServiceLayer.Services.IdentityServerService.ApiSideServices.ApiScopeServices;
+using ServiceLayer.Services.IdentityServerService.ApiSideServices.ApiResourceServices;
+using ServiceLayer.Services.IdentityServerService.ApiSideServices.ApiResourceScopeServices;
+using ServiceLayer.Services.IdentityServerService.ClientServices;
+using ServiceLayer.Services.MemberServices;
+using ServiceLayer.Services.AdminServices;
+using ServiceLayer.Services.AuthServices;
+using ServiceLayer.Services.IdentityServerService.ClientServices.ClientGrantTypeServices;
+using ServiceLayer.Services.IdentityServerService.ClientServices.ClientScopeServices;
+using ServiceLayer.Services.IdentityServerService.ClientServices.ClientSecretServices;
 
 namespace ServiceLayer.Extensions
 {
@@ -110,7 +116,13 @@ namespace ServiceLayer.Extensions
             services.AddScoped<IMemberService, MemberService>();
             services.AddScoped<IEmailHelper, EmailHelper>();
             services.AddScoped<IUnitOfWorks, UnitOfWorks>();
-            services.AddScoped<IIdentityServerService, IdentityServerService>();
+            services.AddScoped<IClientService, ClientService>();
+            services.AddScoped<IApiScopeService, ApiScopeService>();
+            services.AddScoped<IApiResourceService, ApiResourceService>();
+            services.AddScoped<IApiResourceScopeService, ApiResourceScopeService>();
+            services.AddScoped<IClientGrantTypeService, ClientGrantTypeService>();
+            services.AddScoped<IClientScopeService, ClientScopeService>();
+            services.AddScoped<IClientSecretService, ClientSecretService>();
 
             services.Configure<DataProtectionTokenProviderOptions>(opt =>
             {

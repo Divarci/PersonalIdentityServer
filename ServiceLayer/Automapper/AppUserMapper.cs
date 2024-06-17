@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EntityLayer.Models.DTOs;
+using EntityLayer.Models.DTOs.AuthenticationDto;
 using EntityLayer.Models.Entities;
 
 namespace ServiceLayer.Automapper

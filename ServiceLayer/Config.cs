@@ -11,7 +11,7 @@ public static class Config
         return new List<ApiResource>()
             {
                 new ApiResource(IdentityServerConstants.LocalApi.ScopeName),
-                //new ("IdentityApi"){Scopes={ "IdentityApi.Admin", "IdentityApi.Member"}}
+                new ("IdentityApi"){Scopes={ "IdentityApi.Admin", "IdentityApi.Member"}}
             };
     }
 
