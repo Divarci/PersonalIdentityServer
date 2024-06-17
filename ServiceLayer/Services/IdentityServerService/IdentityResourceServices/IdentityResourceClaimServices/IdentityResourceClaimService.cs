@@ -65,7 +65,7 @@ namespace ServiceLayer.Services.IdentityServerService.IdentityResourceServices.I
 
         public async Task<CustomResponseDto<NoContentDto>> RemoveIdentityResourceClaimAsync(int id)
         {
-            var existIdentityResourceClaim = await _identityResourceService.GetAll().FirstOrDefaultAsync(x => x.Id == request.Id);
+            var existIdentityResourceClaim = await _identityResourceService.GetAll().FirstOrDefaultAsync(x => x.Id == id);
             if (existIdentityResourceClaim is null)
             {
                 return CustomResponseDto<NoContentDto>.Fail(400, new ErrorDto(CustomErrorMessages.ClientNotExist));

@@ -16,6 +16,20 @@ namespace IdentityServerApi.Controllers.IdentityServerConfigControllers.ClientCo
             _clientScopeService = clientScopeService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllClientScopes()
+        {
+            var result = await _clientScopeService.GetAllClientScopesAsync();
+            return CreateAction(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetClientScopesById(int id)
+        {
+            var result = await _clientScopeService.GetClientScopeByIdAsync(id);
+            return CreateAction(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddClientScope(ClientScopeCreateDto request)
         {

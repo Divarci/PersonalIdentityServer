@@ -17,6 +17,20 @@ namespace IdentityServerApi.Controllers.IdentityServerConfigControllers.ClientCo
             _clientSecretService = clientSecretService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllClientSecrets()
+        {
+            var result = await _clientSecretService.GetAllClientSecretsAsync();
+            return CreateAction(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetClientSecretById(int id)
+        {
+            var result = await _clientSecretService.GetClientSecretByIdAsync(id);
+            return CreateAction(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddClientSecret(ClientSecretCreateDto request)
         {

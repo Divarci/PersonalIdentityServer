@@ -1,4 +1,5 @@
-﻿using EntityLayer.Models.DTOs.ClientDto.ClientGrantTypeDto;
+﻿using Azure.Core;
+using EntityLayer.Models.DTOs.ClientDto.ClientGrantTypeDto;
 using EntityLayer.Models.DTOs.ClientDto.ClientSecretDto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,20 @@ namespace IdentityServerApi.Controllers.IdentityServerConfigControllers.ClientCo
         public ClientGrantTypeController(IClientGrantTypeService clientGrantTypeService)
         {
             _clientGrantTypeService = clientGrantTypeService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllGrantTypes()
+        {
+            var result = await _clientGrantTypeService.GetAllClientGrantTypesAsync();
+            return CreateAction(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetGrantTypeById(int id)
+        {
+            var result = await _clientGrantTypeService.GetClientGrantTypeByIdAsync(id);
+            return CreateAction(result);
         }
 
         [HttpPost]
